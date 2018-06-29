@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    {% block title %}{% endblock %}
+    {% block custom_head_css_js %} {% endblock %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<style>#myBtn{display:none;position:fixed;bottom:20px;right:30px;z-index:99;font-size:18px;border:none;outline:none;background-color:red;color:#fff;cursor:pointer;padding:15px;border-radius:4px}#myBtn:hover{background-color:#555}</style>
+</head>
+<body>
+
+<div class="container">
+<div class="row">
+<nav>
+  <ul>
+    <a href="/">Home</a> |
+    <a href="{% url "post:post-create" %}">Post</a> |
+    {% if user.is_authenticated %}
+    welcome <a href="{% url "user:user-profile" %}">{{request.user.username}}</a> |
+    <a href="{% url "user:logout" %}">   ---  Logout</a> 
+    {% else %}
+    <a href="{% url "user:usersignup" %}">Join</a> |
+    <a href="{% url "user:userlogin" %}">Login</a> |
+    {% endif %}
+  </ul>
+</nav>
+</div>
+</div>
+<hr>
+
+  <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-2">
+				</div>
+				<div class="col-md-8">
+				    
+				     <a href=/details/10/>开源系统-</a>
+				    
+				     <a href=/details/9/>活动-</a>
+				    
+				     <a href=/details/8/>项目管理-</a>
+				    
+				     <a href=/details/7/>工具-</a>
+				    
+				     <a href=/details/6/>IT流程-</a>
+				    
+				     <a href=/details/5/>Web2.0-</a>
+				    
+				     <a href=/details/4/>安全-</a>
+				    
+				     <a href=/details/3/>django-</a>
+				    
+				     <a href=/details/2/>思科-</a>
+				    
+				     <a href=/details/1/>华为-</a>
+				    
+				</div>
+				<div class="col-md-2">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<hr>
+{% block menu %}
+{% endblock %}
+
+{% block abovecontent  %}
+{% endblock %}
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-3">
+		{% block content_left %}{% endblock %}
+		</div>
+		<div class="col-md-5">
+		{% block content %}{% endblock %}
+		</div>
+		<div class="col-md-4">
+		{% block content_right %}{% endblock %}
+		</div>
+	</div>
+</div>
+
+</body>
+<script>
+window.onscroll = function() {scrollFunction()};
+function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        document.getElementById("myBtn").style.display = "block";
+    } else {
+        document.getElementById("myBtn").style.display = "none";
+    }
+}
+
+function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}
+</script>
+{% block custom_foot_js %} {% endblock %}
+</html>

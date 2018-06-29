@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block custom_head_css_js %}
+
+{% block title %}<title> {{author.username}}-homepage </title>{% endblock %}
+<link rel="stylesheet" href="http://13.114.147.87/static/css/layui.css">
+<script src="http://13.114.147.87/static/layui.js"></script>
+
+{% endblock %}
+{% block content %}
+{% load thumbnail %}
+
+<div class="paragraphs">
+  <div class="row">
+    <div class="span4">
+      <div class="clearfix content-heading">
+          <img class="pull-right gap-right" src="{% thumbnail author.profile.picture 150x100 crop %}"/>
+          <h4>{{author.username}}</h4>
+          <p>{{author.profile.bio}}-</p>
+      </div>
+    </div>
+  </div>
+</div>
+<hr><br>
+
+
+ <ul class="nav nav-tabs">
+        <li class="active"><a href="#">All Post</a></li>
+        <li><a href="{% url "user:user-posts-gallery" author.id %}">Photo Gallery</a></li>
+        <li><a href="{% url "user:user-like-posts" author.id %}">Likes</a></li>
+ </ul>
+
+<hr><br>
+{% for post in userposts %}
+<div class="col-md-12">
+<div class="card" style="width: 88rem;">
+  <img class="card-img-top" src="{% thumbnail post.img 1220x250 crop %}" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">{{post.publish}}</h5>
+    <p class="card-text">{{post.title}}</p>
+    <p><a href="{{post.get_absolute_url}}" >More</a></p>
+  </div>
+</div>
+<hr></br>
+</div>
+{% endfor %}
+	</div>
+</div>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if userposts.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ userposts.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ userposts.number }} of {{ userposts.paginator.num_pages }}.
+        </span>
+
+        {% if userposts.has_next %}
+            <a href="?page={{ userposts.next_page_number }}">next</a>
+            <a href="?page={{ userposts.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+{% endblock %}
+

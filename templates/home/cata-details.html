@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+{% load vote_counter %}
+{% block content %}
+{% for post in posts %}
+<div class="card">
+  <img class="card-img-top" src="{% thumbnail post.img 450x180 crop %}" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">{{post.title}}</h5>
+    <p class="card-text">{{post.author.username}}-{{post.publish}}-<i class="far fa-thumbs-up"><span class="badge">{{post|counter}}</span></i></p>
+  </div>
+  <div class="card-footer text-muted">
+    <a href="{% url "post:post-detail" post.id %}" ><button class="btn btn-outline-light btn-sm ">More</button></a>
+  </div>
+</div>
+<hr><br>
+{% empty %}
+<a href={% url "post:post-create" %}>还没有内容呢，抢先第一个发布吧</a>
+{% endfor %}
+<div class="pagination">
+    <span class="step-links">
+        {% if posts.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ posts.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ posts.number }} of {{ posts.paginator.num_pages }}.
+        </span>
+
+        {% if posts.has_next %}
+            <a href="?page={{ posts.next_page_number }}">next</a>
+            <a href="?page={{ posts.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+{% endblock %}

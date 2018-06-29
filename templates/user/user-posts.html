@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block custom_head_css_js %}
+
+{% block title %}<title> {{author}}-homepage </title>{% endblock %}
+<link rel="stylesheet" href="http://13.114.147.87/static/css/layui.css">
+<script src="http://13.114.147.87/static/layui.js"></script>
+
+{% endblock %}
+{% block content %}
+{% load thumbnail %}
+
+ <ul class="nav nav-tabs">
+        <li class="active"><a href="/upload/basic">All Post</a></li>
+        <li><a href="/upload/basic/plus">Latest</a></li>
+        <li><a href="/upload/new">Photo Gallery</a></li>
+        <li><a href="/upload/angular">AngularJS</a></li>
+        <li><a href="/upload/jquery-ui">jQuery UI</a></li>
+ </ul>
+
+<hr><br>
+{% for post in userposts %}
+<div class="col-md-12">
+<div class="card" style="width: 88rem;">
+  <img class="card-img-top" src="{% thumbnail post.img 1220x250 crop %}" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">{{post.publish}}</h5>
+    <p class="card-text">{{post.title}}</p>
+    <p><a href="{{post.get_absolute_url}}" >More</a></p>
+  </div>
+</div>
+<hr></br>
+</div>
+{% endfor %}
+	</div>
+</div>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if userposts.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ userposts.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ userposts.number }} of {{ userposts.paginator.num_pages }}.
+        </span>
+
+        {% if userposts.has_next %}
+            <a href="?page={{ userposts.next_page_number }}">next</a>
+            <a href="?page={{ userposts.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+{% endblock %}
+
+
+
+
+

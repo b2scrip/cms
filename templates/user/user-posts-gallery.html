@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+
+{% block custom_head_css_js %}
+{% block title %}<title> {{author}}-homepage </title>{% endblock %}
+<link rel="stylesheet" href="http://13.114.147.87/static/css/layui.css">
+<script src="http://13.114.147.87/static/layui.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="paragraphs">
+  <div class="row">
+    <div class="span4">
+      <div class="clearfix content-heading">
+          <img class="pull-right gap-right" src="{% thumbnail author.profile.picture 150x100 crop %}"/>
+          <h4>{{author.username}}</h4>
+          <p>{{author.profile.bio}}-</p>
+      </div>
+    </div>
+  </div>
+</div>
+<hr><br>
+
+
+ <ul class="nav nav-tabs">
+        <li><a href="{% url "user:user-posts" author.id %}">All Post</a></li>
+        <li class="active"><a href="#">Photo Gallery</a></li>
+        <li><a href="{% url "user:user-like-posts" author.id %}">Likes</a></li>
+ </ul>
+
+<hr><br>
+{% for gallery in gallerys %}
+   <img src="/media/pictures/{{gallery.slug}}">
+{% endfor %}
+
+<hr><br>
+<div class="pagination">
+    <span class="step-links">
+        {% if gallerys.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ gallerys.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ gallerys.number }} of {{ gallerys.paginator.num_pages }}.
+        </span>
+
+        {% if gallerys.has_next %}
+            <a href="?page={{ gallerys.next_page_number }}">next</a>
+            <a href="?page={{ gallerys.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+{% endblock %}
+
+
+
+
+

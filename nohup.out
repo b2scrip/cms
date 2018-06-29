@@ -1,0 +1,112 @@
+[20/Jun/2018 10:26:18] "GET /post/create/ HTTP/1.1" 200 7861
+/home/ec2-user/prodct/home/views.py:12: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'post.models.Post'> QuerySet.
+  paginator = Paginator(posts_list, 25)
+[20/Jun/2018 10:26:19] "GET /home/ HTTP/1.1" 200 40915
+[20/Jun/2018 10:26:57] "GET /home/ HTTP/1.1" 200 40915
+[20/Jun/2018 10:26:59] "GET /home/details/13/ HTTP/1.1" 200 2422
+/home/ec2-user/prodct/user/views.py:74: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'post.models.Post'> QuerySet.
+  paginator = Paginator(posts_list, 25) # Show 25 contacts per page
+[20/Jun/2018 10:27:00] "GET /user/1/posts/ HTTP/1.1" 200 6263
+[20/Jun/2018 10:27:14] "GET /home/ HTTP/1.1" 200 40915
+[20/Jun/2018 10:27:16] "GET /home/details/8/ HTTP/1.1" 200 2342
+[20/Jun/2018 10:27:17] "GET /post/create/ HTTP/1.1" 200 7861
+[20/Jun/2018 10:35:30] "GET /home/ HTTP/1.1" 200 40915
+[20/Jun/2018 10:35:38] "GET /user/logout/ HTTP/1.1" 302 0
+[20/Jun/2018 10:35:38] "GET /home HTTP/1.1" 301 0
+[20/Jun/2018 10:35:38] "GET /home/ HTTP/1.1" 200 40913
+[20/Jun/2018 10:35:41] "GET /user/signup/ HTTP/1.1" 200 7747
+[20/Jun/2018 10:36:00] "POST /user/signup/ HTTP/1.1" 200 17
+[20/Jun/2018 10:36:05] "GET /user/join/ HTTP/1.1" 200 8112
+[20/Jun/2018 10:36:14] "POST /user/join/ HTTP/1.1" 200 17
+[20/Jun/2018 10:36:17] "GET /post/create/ HTTP/1.1" 200 7861
+[20/Jun/2018 10:37:49] "GET /home/ HTTP/1.1" 200 40915
+[20/Jun/2018 10:38:41] "GET /home/details/1/ HTTP/1.1" 200 4888
+[20/Jun/2018 10:38:45] "GET /post/create/ HTTP/1.1" 200 7861
+[20/Jun/2018 10:38:47] "GET /post/create/ HTTP/1.1" 200 7861
+[20/Jun/2018 10:38:49] "GET /post/create/ HTTP/1.1" 200 7861
+[20/Jun/2018 10:38:51] "GET /user/logout/ HTTP/1.1" 302 0
+[20/Jun/2018 10:38:51] "GET /home HTTP/1.1" 301 0
+[20/Jun/2018 10:38:52] "GET /home/ HTTP/1.1" 200 40913
+[20/Jun/2018 10:38:54] "GET /user/join/ HTTP/1.1" 200 8112
+[20/Jun/2018 10:39:29] "POST /user/join/ HTTP/1.1" 200 17
+[20/Jun/2018 10:39:35] "GET /post/create/ HTTP/1.1" 200 7865
+[20/Jun/2018 10:39:38] "GET /post/create/ HTTP/1.1" 200 7865
+[20/Jun/2018 10:39:39] "GET /home/ HTTP/1.1" 200 40920
+[20/Jun/2018 10:40:11] "GET /user/1/posts/ HTTP/1.1" 200 6268
+[20/Jun/2018 10:40:16] "GET /home/ HTTP/1.1" 200 40920
+[20/Jun/2018 10:40:18] "GET /home/details/1/ HTTP/1.1" 200 4893
+[20/Jun/2018 10:40:23] "GET /home/ HTTP/1.1" 200 40920
+[20/Jun/2018 10:40:25] "GET /home/details/2/ HTTP/1.1" 200 2347
+[20/Jun/2018 10:40:27] "GET /home/ HTTP/1.1" 200 40920
+[20/Jun/2018 10:40:29] "GET /home/details/9/ HTTP/1.1" 200 18935
+[20/Jun/2018 10:41:10] "GET /home/ HTTP/1.1" 200 40920
+[20/Jun/2018 10:42:58] "GET /home/ HTTP/1.1" 200 40920
+Traceback (most recent call last):
+  File "/usr/lib64/python3.4/socketserver.py", line 617, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/usr/lib64/python3.4/socketserver.py", line 344, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/usr/lib64/python3.4/socketserver.py", line 673, in __init__
+    self.handle()
+  File "/opt/SecurityManageFramwork/py3/lib64/python3.4/site-packages/django/core/servers/basehttp.py", line 139, in handle
+    self.raw_requestline = self.rfile.readline(65537)
+  File "/usr/lib64/python3.4/socket.py", line 378, in readinto
+    return self._sock.recv_into(b)
+ConnectionResetError: [Errno 104] Connection reset by peer
+[21/Jun/2018 01:41:49] "GET /home/ HTTP/1.1" 200 40918
+[21/Jun/2018 01:41:50] "GET /home/details/1/ HTTP/1.1" 200 4891
+[21/Jun/2018 01:41:52] "GET /user/1/posts/ HTTP/1.1" 200 6266
+[21/Jun/2018 01:41:55] "GET /post/create/ HTTP/1.1" 200 7863
+[21/Jun/2018 01:41:56] "GET /static/ckeditor/ckeditor/ckeditor.js HTTP/1.1" 304 0
+[21/Jun/2018 01:41:56] "GET /static/ckeditor/ckeditor-init.js HTTP/1.1" 304 0
+[21/Jun/2018 01:41:56] "GET /static/ckeditor/ckeditor/config.js?t=I3I8 HTTP/1.1" 304 0
+[21/Jun/2018 01:41:56] "GET /static/ckeditor/ckeditor/skins/moono-lisa/editor.css?t=I3I8 HTTP/1.1" 304 0
+[21/Jun/2018 01:41:56] "GET /static/ckeditor/ckeditor/lang/zh-cn.js?t=I3I8 HTTP/1.1" 304 0
+[21/Jun/2018 01:41:56] "GET /home/ HTTP/1.1" 200 40918
+Traceback (most recent call last):
+  File "/usr/lib64/python3.4/socketserver.py", line 617, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/usr/lib64/python3.4/socketserver.py", line 344, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/usr/lib64/python3.4/socketserver.py", line 673, in __init__
+    self.handle()
+  File "/opt/SecurityManageFramwork/py3/lib64/python3.4/site-packages/django/core/servers/basehttp.py", line 139, in handle
+    self.raw_requestline = self.rfile.readline(65537)
+  File "/usr/lib64/python3.4/socket.py", line 378, in readinto
+    return self._sock.recv_into(b)
+ConnectionResetError: [Errno 104] Connection reset by peer
+[21/Jun/2018 05:13:01] "GET /home/details/4/ HTTP/1.1" 200 2345
+[21/Jun/2018 05:13:03] "GET /home/ HTTP/1.1" 200 40918
+Traceback (most recent call last):
+  File "/usr/lib64/python3.4/socketserver.py", line 617, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/usr/lib64/python3.4/socketserver.py", line 344, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/usr/lib64/python3.4/socketserver.py", line 673, in __init__
+    self.handle()
+  File "/opt/SecurityManageFramwork/py3/lib64/python3.4/site-packages/django/core/servers/basehttp.py", line 139, in handle
+    self.raw_requestline = self.rfile.readline(65537)
+  File "/usr/lib64/python3.4/socket.py", line 378, in readinto
+    return self._sock.recv_into(b)
+ConnectionResetError: [Errno 104] Connection reset by peer
+[21/Jun/2018 05:13:33] "GET /user/1/posts/ HTTP/1.1" 200 6266
+[21/Jun/2018 05:13:38] "GET /home/ HTTP/1.1" 200 40918
+[21/Jun/2018 05:13:42] "GET /user/1/posts/ HTTP/1.1" 200 6266
+Performing system checks...
+
+System check identified no issues (0 silenced).
+June 20, 2018 - 10:23:54
+Django version 2.0.4, using settings 'prodct.settings'
+Starting development server at http://0.0.0.0:2020/
+Quit the server with CONTROL-C.
+call ajax....
+Yyu hshsjs Gsggs@gmail.com
+----------------------------------------
+Exception happened during processing of request from ('203.177.51.166', 26211)
+----------------------------------------
+----------------------------------------
+Exception happened during processing of request from ('203.177.51.166', 50423)
+----------------------------------------
+----------------------------------------
+Exception happened during processing of request from ('203.177.51.166', 50490)
+----------------------------------------

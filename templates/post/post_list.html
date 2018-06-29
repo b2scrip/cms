@@ -1,0 +1,30 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% block custom_head_css_js %}
+<script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+<script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+
+{% endblock %}
+
+{% block content %}
+<a href="/post/create">信息发布</a>
+{% for post in posts %}
+<div class="card text-center">
+  <div class="card-header">
+    Featured
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">{{post.title}}</h5>
+    <p class="card-text">{{post.content|safe}}</p>
+    <a href={{post.get_absolute_url}} class="btn btn-primary">>></a>
+  </div>
+  <div class="card-footer text-muted">
+    2 days ago
+  </div>
+</div>
+<hr>
+
+{% endfor %}
+{% endblock %}
+

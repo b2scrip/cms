@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+{% load bootstrap %}
+{% block custom_head_css_js %} 
+<script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+<script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.1/build/alertify.min.js"></script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.1/build/css/alertify.min.css"/>
+{% endblock %}
+{% block content %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<form action="." method="POST" enctype="multipart/form-data">{% csrf_token %}
+    {{ form | bootstrap }}
+<button type="button" class="btn btn-primary btn-sm">创建</button>
+</form>
+</script>
+{% endblock %}

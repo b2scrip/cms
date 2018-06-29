@@ -1,0 +1,70 @@
+[2018-06-22 09:17:10 +0000] [19931] [INFO] Starting gunicorn 19.8.1
+[2018-06-22 09:17:10 +0000] [19931] [INFO] Listening at: http://127.0.0.1:8000 (19931)
+[2018-06-22 09:17:10 +0000] [19931] [INFO] Using worker: sync
+[2018-06-22 09:17:10 +0000] [19934] [INFO] Booting worker with pid: 19934
+[2018-06-22 09:17:10 +0000] [19934] [ERROR] Exception in worker process
+Traceback (most recent call last):
+  File "/opt/SecurityManageFramwork/py3/lib64/python3.4/site-packages/gunicorn/arbiter.py", line 583, in spawn_worker
+    worker.init_process()
+  File "/opt/SecurityManageFramwork/py3/lib64/python3.4/site-packages/gunicorn/workers/base.py", line 129, in init_process
+    self.load_wsgi()
+  File "/opt/SecurityManageFramwork/py3/lib64/python3.4/site-packages/gunicorn/workers/base.py", line 138, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/opt/SecurityManageFramwork/py3/lib64/python3.4/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/opt/SecurityManageFramwork/py3/lib64/python3.4/site-packages/gunicorn/app/wsgiapp.py", line 52, in load
+    return self.load_wsgiapp()
+  File "/opt/SecurityManageFramwork/py3/lib64/python3.4/site-packages/gunicorn/app/wsgiapp.py", line 41, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/opt/SecurityManageFramwork/py3/lib64/python3.4/site-packages/gunicorn/util.py", line 350, in import_app
+    __import__(module)
+ImportError: No module named 'ls'
+[2018-06-22 09:17:10 +0000] [19934] [INFO] Worker exiting (pid: 19934)
+[2018-06-22 09:17:10 +0000] [19935] [INFO] Booting worker with pid: 19935
+[2018-06-22 09:17:10 +0000] [19935] [ERROR] Exception in worker process
+Traceback (most recent call last):
+  File "/opt/SecurityManageFramwork/py3/lib64/python3.4/site-packages/gunicorn/arbiter.py", line 583, in spawn_worker
+    worker.init_process()
+  File "/opt/SecurityManageFramwork/py3/lib64/python3.4/site-packages/gunicorn/workers/base.py", line 129, in init_process
+    self.load_wsgi()
+  File "/opt/SecurityManageFramwork/py3/lib64/python3.4/site-packages/gunicorn/workers/base.py", line 138, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/opt/SecurityManageFramwork/py3/lib64/python3.4/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/opt/SecurityManageFramwork/py3/lib64/python3.4/site-packages/gunicorn/app/wsgiapp.py", line 52, in load
+    return self.load_wsgiapp()
+  File "/opt/SecurityManageFramwork/py3/lib64/python3.4/site-packages/gunicorn/app/wsgiapp.py", line 41, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/opt/SecurityManageFramwork/py3/lib64/python3.4/site-packages/gunicorn/util.py", line 350, in import_app
+    __import__(module)
+ImportError: No module named 'ls'
+[2018-06-22 09:17:10 +0000] [19935] [INFO] Worker exiting (pid: 19935)
+[2018-06-22 09:17:10 +0000] [19931] [INFO] Shutting down: Master
+[2018-06-22 09:17:10 +0000] [19931] [INFO] Reason: Worker failed to boot.
+[2018-06-22 09:19:00 +0000] [19967] [INFO] Starting gunicorn 19.8.1
+[2018-06-22 09:19:00 +0000] [19967] [INFO] Listening at: http://127.0.0.1:8000 (19967)
+[2018-06-22 09:19:00 +0000] [19967] [INFO] Using worker: sync
+[2018-06-22 09:19:00 +0000] [19970] [INFO] Booting worker with pid: 19970
+[2018-06-22 09:19:01 +0000] [19972] [INFO] Booting worker with pid: 19972
+[2018-06-22 09:21:07 +0000] [19967] [INFO] Handling signal: int
+[2018-06-22 09:21:07 +0000] [19970] [INFO] Worker exiting (pid: 19970)
+[2018-06-22 09:21:07 +0000] [19972] [INFO] Worker exiting (pid: 19972)
+[2018-06-22 09:21:08 +0000] [19967] [INFO] Shutting down: Master
+[2018-06-22 09:21:15 +0000] [20015] [INFO] Starting gunicorn 19.8.1
+[2018-06-22 09:21:15 +0000] [20015] [INFO] Listening at: http://127.0.0.1:8000 (20015)
+[2018-06-22 09:21:15 +0000] [20015] [INFO] Using worker: sync
+[2018-06-22 09:21:15 +0000] [20018] [INFO] Booting worker with pid: 20018
+[2018-06-22 09:21:15 +0000] [20019] [INFO] Booting worker with pid: 20019
+[2018-06-22 09:21:15 +0000] [20018] [INFO] Worker exiting (pid: 20018)
+[2018-06-22 09:21:15 +0000] [20019] [INFO] Worker exiting (pid: 20019)
+[2018-06-22 09:21:15 +0000] [20015] [INFO] Shutting down: Master
+[2018-06-22 09:21:15 +0000] [20015] [INFO] Reason: App failed to load.
+[2018-06-22 09:21:23 +0000] [20024] [INFO] Starting gunicorn 19.8.1
+[2018-06-22 09:21:23 +0000] [20024] [INFO] Listening at: http://127.0.0.1:8000 (20024)
+[2018-06-22 09:21:23 +0000] [20024] [INFO] Using worker: sync
+[2018-06-22 09:21:23 +0000] [20027] [INFO] Booting worker with pid: 20027
+[2018-06-22 09:21:23 +0000] [20029] [INFO] Booting worker with pid: 20029
+[2018-06-22 09:23:05 +0000] [20024] [INFO] Handling signal: int
+[2018-06-22 09:23:05 +0000] [20029] [INFO] Worker exiting (pid: 20029)
+[2018-06-22 09:23:05 +0000] [20027] [INFO] Worker exiting (pid: 20027)
+[2018-06-22 09:23:05 +0000] [20024] [INFO] Shutting down: Master

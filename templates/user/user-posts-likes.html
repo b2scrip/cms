@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+
+{% block custom_head_css_js %}
+{% block title %}<title> {{author}}-homepage </title>{% endblock %}
+<link rel="stylesheet" href="http://13.114.147.87/static/css/layui.css">
+<script src="http://13.114.147.87/static/layui.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="paragraphs">
+  <div class="row">
+    <div class="span4">
+      <div class="clearfix content-heading">
+          <img class="pull-right gap-right" src="{% thumbnail author.profile.picture 150x100 crop %}"/>
+          <h5>{{author.username}}</h5>
+          <p>{{author.profile.bio}}-</p>
+      </div>
+    </div>
+  </div>
+</div>
+<hr><br>
+
+
+ <ul class="nav nav-tabs">
+        <li><a href="{% url "user:user-posts" author.id %}">All Post</a></li>
+        <li><a href="{% url "user:user-posts-gallery" author.id %}">Photo Gallery</a></li>
+        <li class="active"><a href="#">Likes</a></li>
+ </ul>
+
+<hr><br>
+{% for post in postlikes  %}
+<div class="paragraphs">
+  <div class="row">
+    <div class="span4">
+      <div class="clearfix content-heading">
+          <img class="pull-right gap-right" src="{% thumbnail post.img 150x100 crop %}"/>
+          <h5>{{post.title|truncatechars:50}}</h5>
+          <h5><a href={% url "user:user-posts" post.author.id %}>{{post.author.username}}</a>-{{post.publish}}</h5>
+         <a href="{% url "post:post-detail" post.id %}" ><button class="btn btn-outline-light btn-sm ">More</button></a>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+<p>{{post.title}}</p>
+{% endfor %}
+{% endblock %}

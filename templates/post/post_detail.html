@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+{% block title %}<title>{{post.title}}</title>{% endblock %}
+{% block custom_head_css_js  %}
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.1/build/alertify.min.js"></script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.1/build/css/alertify.min.css"/>
+<style>
+.btn-circle {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 12px;
+  line-height: 1.42;
+  border-radius: 15px;
+}
+.well {
+background-image:url(/i/eg_bg_04.gif);
+}
+</style>
+{% endblock %}
+
+{% block abovecontent %}
+<div class="well">
+<blockquote class="blockquote">
+  <p class="mb-0">{{post.title}}</p>
+  <footer class="blockquote-footer"><a href={% url "user:user-posts" post.author.id %}>{{post.author.username}}</a> - {{post.publish}} -<a href="{% url "home:cataposts" post.catalog.pk %}">{{post.catalog.name}}</a></footer>
+</blockquote>
+</div>
+{% endblock %}
+
+
+{% block content_left  %}
+   <div class="row">
+    <p data-id="{{ post.id }}" data-type="post" data-action="like" title="Like">
+       <!-- <span class="glyphicon glyphicon-thumbs-up"></span>-->
+         <button type="button" class="btn btn-default btn-sm pull-right">
+          <span class="glyphicon glyphicon-thumbs-up"></span> Like
+        </button>
+        <span  class="badge badge-light pull-right" data-count="like">{{ post.votes.likes.count }}</span>
+    </p>
+</div>
+{% endblock %}
+
+{% block content %}
+    {% load thumbnail %}
+    <img src="{% thumbnail post.img 1250x350 crop %}" class="img-fluid" alt="Responsive image" />
+    <h1>{{ post.title }}</h1>
+    <p>{{ post.content |safe}}</p>
+    <p>Date: {{ now|date }}</p>
+
+{% endblock %}
+
+{% block custom_foot_js %} 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<script>
+function like(){
+{% if user.is_authenticated %}
+    var like = $(this);
+    var pk = like.data('id');
+    var action = like.data('action');
+	$.ajax({
+        url : "/post/api/" +  pk + "/" + action + "/",
+        type : 'POST',
+        data : { 'obj' : pk },
+        success : function (json) {
+            like.find("[data-count='like']").text(json.like_count);
+            dislike.find("[data-count='dislike']").text(json.dislike_count);
+        }
+    });
+{% else %}
+    alertify.warning('You need login first');
+{% endif %} 
+    return false;
+}
+
+$(function() {
+    $('[data-action="like"]').click(like);
+});
+</script>
+<script>
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+function csrfSafeMethod(method) {
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+</script>
+{% endblock %}
