@@ -23,10 +23,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '0fh%qdk%$_0(kep^=l4&q#j7s$tygxm-j+1x$r*jh%@&q2g(z*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-#DEBUG = True
+#DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','localhost','www.kongta.tk','kongta.tk']
+ALLOWED_HOSTS = ['127.0.0.1','localhost','www.kongta.tk','kongta.tk','www.muli.ml','muli.ml']
 #ALLOWED_HOSTS = ['*']
 
 
@@ -39,12 +39,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'rest_framework',
 
     'haystack',
 
     'home',
     'post',
+    'video',
     'fileupload',
     'catalog',
     'user',
@@ -160,7 +162,7 @@ CKEDITOR_RESTRICT_BY_DATE=True
 CKEDITOR_RESTRICT_BY_USER=True
 
 
-LOGIN_URL = "/"
-LOGIN_REDIRECT_URL = "/" 
+LOGIN_URL = "/user/login/"
+LOGIN_REDIRECT_URL = "/user/profile/" 
 LOGOUT_REDIRECT_URL = "/"
 

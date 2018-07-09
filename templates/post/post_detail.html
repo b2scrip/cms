@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% load thumbnail %}
+{% load template_helper %}
+{% load bootstrap  %}
 {% block title %}<title>{{post.title}}</title>{% endblock %}
 {% block custom_head_css_js  %}
-<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.1/build/alertify.min.js"></script>
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.1/build/css/alertify.min.css"/>
 <style>
 .btn-circle {
@@ -15,8 +16,27 @@
   border-radius: 15px;
 }
 .well {
-background-image:url(/i/eg_bg_04.gif);
+background-image:url("");
 }
+.breakword{
+max-width:100%;
+float:left;
+word-wrap: break-word;}
+.floating-menu {
+    font-family: sans-serif;
+    background: yellowgreen;
+    padding: 5px;;
+    width: 130px;
+    z-index: 100;
+    position: fixed;
+  }
+  .floating-menu a, 
+  .floating-menu h3 {
+    font-size: 0.9em;
+    display: block;
+    margin: 0 0.5em;
+    color: white;
+  }
 </style>
 {% endblock %}
 
@@ -31,15 +51,19 @@ background-image:url(/i/eg_bg_04.gif);
 
 
 {% block content_left  %}
-   <div class="row">
-    <p data-id="{{ post.id }}" data-type="post" data-action="like" title="Like">
+<nav class="floating-menu">
+    <p data-id="{{ post.id }}" data-type="post" data-action="like" data-object="post-like">
        <!-- <span class="glyphicon glyphicon-thumbs-up"></span>-->
-         <button type="button" class="btn btn-default btn-sm pull-right">
-          <span class="glyphicon glyphicon-thumbs-up"></span> Like
-        </button>
+        <!-- <button type="button" class="btn btn-default btn-sm pull-right">-->
+          <span class="glyphicon glyphicon-thumbs-up">点赞</span>
+        <!--</button> -->
         <span  class="badge badge-light pull-right" data-count="like">{{ post.votes.likes.count }}</span>
     </p>
-</div>
+    <p onclick="javascript:scrolltobutton();"> 
+    <span><i class="fas fa-comment"></i>评论</span>   
+    <span class="badge badge-light pull-right" >{{post.get_comments_count}} </span>
+    </p>
+</nav>
 {% endblock %}
 
 {% block content %}
@@ -47,12 +71,47 @@ background-image:url(/i/eg_bg_04.gif);
     <img src="{% thumbnail post.img 1250x350 crop %}" class="img-fluid" alt="Responsive image" />
     <h1>{{ post.title }}</h1>
     <p>{{ post.content |safe}}</p>
-    <p>Date: {{ now|date }}</p>
-
+    {% if post.comment_set.count > 0 %}<hr>{% endif %}
+  {% for comment in post.comment_set.all %}
+<div class="card text-left">
+  <div class="card-header">
+ <a href="{% url "user:user-posts" comment.author.id %}">
+ <img src="{% thumbnail comment.author.profile.picture 30x30 crop %}"/>
+ </a>
+ <a href="{% url "user:user-posts" comment.author.id %}" >{{ comment.author.username }}</a>
+ 评论于 <time datetime="{{ comment.created_time }}" title="{{ comment.created_time | date:'Y-m-d H:i:s' }}">{{ comment.created_time | timesince }}</time> 前
+ <a href="javascript:reply('{{ comment.id | escapejs }}', '{{ comment.content | truncatechars:20 | escapejs }}');">回复</a>
+  </div>
+  <div class="card-body">
+    <p class="card-text breakword">
+          {% if comment.parent %}
+           <blockquote><h6>回复 {{ comment.parent.author.username }} 的评论 “{{ comment.parent.content | truncatechars:50 }}”</h6></blockquote>
+          {% endif %}
+          <p>{{ comment.content | linebreaksbr }}</p>
+    </p>
+  </div>
+</div>
+    <p data-id="{{ comment.id }}" data-type="post" data-action="like" data-object="comment-like">
+       <!-- <span class="glyphicon glyphicon-thumbs-up"></span>-->
+         <span class="glyphicon glyphicon-thumbs-up"></span> Like
+        <span  class="badge badge-light pull-right" data-count="like">{{comment.votes.likes.count}}</span>
+    </p>
+<hr>
+  {% endfor %}
+{% if user.is_authenticated %}
+  <div id="comdiv"></div>
+ <form class="comment-form-ajax" id="comment-form-id" method="post"> 
+	{{ comment_form | bootstrap }}
+        <button type="submit" class="btn-default btn-block btn-xs margin-top">提交</button>
+	{% csrf_token %}
+</form>
+{% else %}
+You need<a href={% url "user:userlogin" %}>Login </a> First
+{% endif %}
 {% endblock %}
-
 {% block custom_foot_js %} 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.1/build/alertify.min.js"></script>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
 <script>
 function like(){
@@ -60,21 +119,30 @@ function like(){
     var like = $(this);
     var pk = like.data('id');
     var action = like.data('action');
+    var object = like.data('object');
+    if ( object == "comment-like" ){
 	$.ajax({
-        url : "/post/api/" +  pk + "/" + action + "/",
+        url : "/post/api/comment/" +  pk + "/" + action + "/",
         type : 'POST',
         data : { 'obj' : pk },
         success : function (json) {
             like.find("[data-count='like']").text(json.like_count);
-            dislike.find("[data-count='dislike']").text(json.dislike_count);
+            } });
+        } else if ( object == "post-like" ) {
+           $.ajax({
+           url : "/post/api/" +  pk + "/" + action + "/",
+           type : 'POST',
+           data : { 'obj' : pk },
+           success : function (json) {
+           like.find("[data-count='like']").text(json.like_count);
         }
-    });
+       });
+}
 {% else %}
     alertify.warning('You need login first');
 {% endif %} 
     return false;
 }
-
 $(function() {
     $('[data-action="like"]').click(like);
 });
@@ -106,5 +174,16 @@ $.ajaxSetup({
         }
     }
 });
+</script>
+<script type="text/javascript">
+function escape(txt) {
+    return txt && txt.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+function scrolltobutton(){document.getElementById("comdiv").scrollIntoView();}
+function reply(id, touser) {
+    $("#id_parent").val(id);
+    scrolltobutton();
+//    document.getElementById("comdiv").scrollIntoView();
+}
 </script>
 {% endblock %}

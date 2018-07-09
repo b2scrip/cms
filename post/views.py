@@ -8,10 +8,11 @@ from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect  
+from django.urls import reverse
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
 
-from .forms import PostForm
+from .forms import PostForm,CommentForm
 from .models import Post
 
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
@@ -20,21 +21,15 @@ from .permissions import IsOwnerOrReadOnly
 from .serializers import PostSerializer
 
 
-import time
-from django.http import StreamingHttpResponse
-from django.template.loader import render_to_string
 
 class PostCreate(LoginRequiredMixin,FormView):
-    login_url = '/user/join/'
+    login_url = '/user/login/'
     form_class =  PostForm 
     template_name = "post/post_create_form.html"  
     success_url = "/post/list/"
 
     def form_invalid(self, form):
-        print(form.data)
-        print("form invalid...")
         response = super().form_invalid(form)
-        print(response)
         if self.request.is_ajax():
             data = {
                 'message': "Invalid input",
@@ -44,11 +39,9 @@ class PostCreate(LoginRequiredMixin,FormView):
             return response
 
     def form_valid(self, form):
-        print("form valid...")
         form.instance.author = self.request.user
         #form.save_m2m()
         response = super().form_valid(form)
-        print(response)
         if self.request.is_ajax():
             data = {
                 'message': "ok",
@@ -74,21 +67,50 @@ class PostList(ListView):
     
 def postdetail(request,id):
     post_instance = get_object_or_404(Post,pk=id)
-    return render(request,'post/post_detail.html',{"post":post_instance})
+    if request.method == "POST":
+        if request.user.is_authenticated:
+            form = CommentForm(request.POST or None)
+            if form.is_valid():
+                comment = form.save(commit=False)
+                comment.author = request.user
+                comment.post = post_instance
+                comment.save()
+ 
+                return HttpResponseRedirect(reverse("post:post-detail",args=[post_instance.id]))
+    return render(request,
+                 'post/post_detail.html',
+                 {"post":post_instance,"comment_form":CommentForm()})
 
-@login_required(login_url='/user/join/')
+@login_required(login_url='/user/login/')
 def postcreate(request):
     if request.method == 'POST':
-        print(request.FILES.get("img",None))
-        print(request.POST["content"]=="")
         form = PostForm(request.POST,request.FILES)
         if form.is_valid() :
             form.instance.author = request.user
             form.save()
-            return HttpResponseRedirect("/")
+            return HttpResponseRedirect(reverse("user:user-profile"))
         messages.add_message(request, messages.INFO, '正文内容不能为空')
     context = {"form":PostForm} 
     return render(request,"post/post_create_form.html",context)
+
+@login_required
+def postedit(request,pk):
+    post = get_object_or_404(Post,pk=pk)
+    if request.user == post.author:
+        if request.method == 'POST':
+            form = PostForm(request.POST,request.FILES,instance=post)
+            if form.is_valid() :
+                #form.instance.user = request.user
+                form.save()
+                return HttpResponseRedirect(reverse("user:user-profile"))
+        context = {"form":PostForm(initial={"title":post.title,
+                                            "content":post.content,
+                                            "img":post.img,
+                                            "catalog":post.catalog,
+                                   })}
+        return render(request,"post/post_update_form.html",context)
+    else:
+        return HttpResponseRedirect(reverse("user:user-profile"))
 
 
 class PostMixin(object):
@@ -100,21 +122,4 @@ class PostMixin(object):
 class PostApi(PostMixin, ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
-def test(request):
-    return StreamingHttpResponse(stream_response_generator())
-
-
-def stream_response_generator():
-    
-    yield render_to_string('bigpipe.html', {"title":"BigPipe Test Page"})
-    for x in range(0,10):
-        is_last = False
-        if x == 9: is_last = True
-        pagelet = dict(id="content_%s" % x, get_html_content=x, 
-                        get_css_resources="", get_js_resources="", 
-                        is_last=is_last )
-        yield render_to_string('pagelet.html',{'pagelet':pagelet})
-        
-        time.sleep(1)
-    yield "</body></html>\n"
 

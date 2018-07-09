@@ -5,10 +5,14 @@ from django.shortcuts import render,get_object_or_404
 from django.contrib.auth import authenticate,login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from likedislike.models import LikeDislike
-from post.models import Post
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.shortcuts import redirect
+from django.urls import reverse
+
+from post.models import Post
+from .models import Profile
+from .forms import EditProfileForm
+from likedislike.models import LikeDislike
 
 class JoinFormView(View):
     template_name  = 'user/join_ajax.html'
@@ -117,8 +121,35 @@ def user_profile(request):
 def profile_setting(request):
     pass 
 
-def user_like_posts(request,id):
+def what_author_likes(request,id):
     author = get_object_or_404(User,pk=id)
-    post_likes = [get_object_or_404(Post,pk=object_id["object_id"]) for object_id in author.likedislike_set.values("object_id")]
+    post_likes = [get_object_or_404(Post,pk=object_id["object_id"]) \
+                  for object_id in author.likedislike_set.values("object_id")]
     context = {"postlikes":post_likes,"author":author}
     return render(request,"user/user-posts-likes.html",context)
+
+@login_required
+def edit_profile_form(request,id):
+    profile = get_object_or_404(Profile,pk=id)    
+    if request.user == profile.user:
+        if request.method == 'POST':
+            form = EditProfileForm(request.POST,request.FILES,instance=profile)
+            if form.is_valid() :
+                form.instance.user = request.user
+                form.save()
+                return HttpResponseRedirect(reverse("user:user-profile"))
+        context = {"form":EditProfileForm(initial={"bio":profile.bio,"picture":profile.picture})}
+        return render(request,"user/user-profile-update.html",context)
+
+@login_required
+def  who_likes_me(request):
+   supporters =  []
+   myposts = Post.objects.filter(author=request.user)
+   if myposts.exists():
+        for post in myposts:
+           if  post.check_who_like_this_post() is not  None:
+               supporters += post.check_who_like_this_post()
+   return render(request,
+                 "user/user-profile-likes.html",
+                  {"supporters":list(set(supporters)),"author":request.user}
+                 )        

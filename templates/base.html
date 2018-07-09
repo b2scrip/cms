@@ -3,23 +3,46 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="renderer" content="webkit">
     {% block title %}{% endblock %}
+      <link rel="icon" type="image/ico" href="/media/ico/muli.ico">
     {% block custom_head_css_js %} {% endblock %}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link type="text/css" rel="stylesheet" href="/static/js/jquery.dropdown.min.css" />
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.dropdown.min.js"></script>
+
 <style>#myBtn{display:none;position:fixed;bottom:20px;right:30px;z-index:99;font-size:18px;border:none;outline:none;background-color:red;color:#fff;cursor:pointer;padding:15px;border-radius:4px}#myBtn:hover{background-color:#555}</style>
 </head>
 <body>
 
 <div class="container">
 <div class="row">
+
 <nav>
-  <ul>
+<div id="jq-dropdown-1" class="jq-dropdown jq-dropdown-tip">
+    <ul class="jq-dropdown-menu">
+        <li><a href="{% url "user:user-profile" %}">Profile</a></li>
+        <li><a href="{% url "user:user-supporter" %}">WhoLikeMe</a></li>
+        <li><a href="{% url "upload:upload-angular" %}">Pictures</a></li>
+        <li class="jq-dropdown-divider"></li>
+        <li><a href="#">Setting</a></li>
+        <li><a href="{% url "post:post-create" %}">New Post</a></li>
+        {% if request.user.is_superuser %}
+        <li><a href="{% url "video:video-create" %}">New Viedeo</a></li>
+        {% endif %}
+        {% if request.user.is_superuser %}
+        <li><a href="/admin/">Admin Dashboard</a></li>
+        {% endif %}
+    </ul>
+</div>
+<ul>
+<br>
     <a href="/">Home</a> |
     <a href="{% url "post:post-create" %}">Post</a> |
     {% if user.is_authenticated %}
-    welcome <a href="{% url "user:user-profile" %}">{{request.user.username}}</a> |
+    {% load thumbnail %}
+    welcome <a href="#" data-jq-dropdown="#jq-dropdown-1">{{request.user.username}}</a> |
     <a href="{% url "user:logout" %}">   ---  Logout</a> 
     {% else %}
     <a href="{% url "user:usersignup" %}">Join</a> |
@@ -30,9 +53,7 @@
 </div>
 </div>
 <hr>
-
-  <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
-
+<button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12">
@@ -40,27 +61,26 @@
 				<div class="col-md-2">
 				</div>
 				<div class="col-md-8">
-				    
-				     <a href=/details/10/>开源系统-</a>
-				    
-				     <a href=/details/9/>活动-</a>
-				    
-				     <a href=/details/8/>项目管理-</a>
-				    
-				     <a href=/details/7/>工具-</a>
-				    
-				     <a href=/details/6/>IT流程-</a>
-				    
-				     <a href=/details/5/>Web2.0-</a>
-				    
-				     <a href=/details/4/>安全-</a>
-				    
-				     <a href=/details/3/>django-</a>
-				    
-				     <a href=/details/2/>思科-</a>
-				    
-				     <a href=/details/1/>华为-</a>
-				    
+<a href={% url "video:video-list" %}>视频</a>
+<a href=/catalogs/29/>二手车</a>
+<a href=/catalogs/28/>房屋</a>
+<a href=/catalogs/27/>签证</a>
+<a href=/catalogs/26/>区块链</a>
+<a href=/catalogs/25/>SEO</a>
+<a href=/catalogs/24/>市场</a>
+<a href=/catalogs/23/>财务</a>
+<a href=/catalogs/22/>客服</a>
+<a href=/catalogs/21/>技术</a>
+<a href=/catalogs/20/>性福天地</a>
+<a href=/catalogs/19/>英语</a>
+<a href=/catalogs/18/>摄影</a>
+<a href=/catalogs/17/>体育</a>
+<a href=/catalogs/16/>游戏</a>
+<a href=/catalogs/15/>美食</a>
+<a href=/catalogs/14/>旅行</a>
+<a href=/catalogs/13/>新闻</a>
+<a href=/catalogs/12/>活动</a>
+<a href=/catalogs/11/>求助</a>
 				</div>
 				<div class="col-md-2">
 				</div>
@@ -69,15 +89,12 @@
 	</div>
 </div>
 <hr>
-{% block menu %}
-{% endblock %}
-
 {% block abovecontent  %}
 {% endblock %}
 
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-md-3">
+		<div class="col-md-3 offset-sm-2">
 		{% block content_left %}{% endblock %}
 		</div>
 		<div class="col-md-5">

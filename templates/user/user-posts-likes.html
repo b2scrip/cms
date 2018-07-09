@@ -3,8 +3,6 @@
 
 {% block custom_head_css_js %}
 {% block title %}<title> {{author}}-homepage </title>{% endblock %}
-<link rel="stylesheet" href="http://13.114.147.87/static/css/layui.css">
-<script src="http://13.114.147.87/static/layui.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -13,7 +11,7 @@
     <div class="span4">
       <div class="clearfix content-heading">
           <img class="pull-right gap-right" src="{% thumbnail author.profile.picture 150x100 crop %}"/>
-          <h5>{{author.username}}</h5>
+          <h4>{{author.username}}</h4>
           <p>{{author.profile.bio}}-</p>
       </div>
     </div>
@@ -44,5 +42,7 @@
 </div>
 <br>
 <p>{{post.title}}</p>
+{% empty %}
+<p> No data</p>
 {% endfor %}
 {% endblock %}

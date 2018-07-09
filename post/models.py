@@ -12,7 +12,6 @@ import datetime
 
 #from taggit.managers import TaggableManager
 
-
 class Post(models.Model):
     title 		= models.CharField(max_length=50,blank=False)
     content 		= RichTextUploadingField(blank=False)
@@ -31,6 +30,46 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    def check_who_like_this_post(self):
+        if self.votes.likes().exists():
+            return [like.user  for like in self.votes.likes()]
+        else:
+            return None
+    
     def get_absolute_url(self):
         return  reverse('post:post-detail', kwargs={'id':self.pk})
+    def get_instance_catalog(self):
+        return self.catalog.name
 
+    @classmethod
+    def get_posts_for_homepage(cls):
+        return cls.objects.all()[:5]
+    @classmethod
+    def get_posts_catalog(cls):
+        return cls.objects.first().get_instance_catalog()
+
+    @property
+    def get_comments_count(self):
+        return self.comment_set.count()
+
+
+class Comment(models.Model):
+    content = models.TextField()
+
+#    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+#    object_id = models.PositiveIntegerField()
+#    content_object = GenericForeignKey()
+
+    post = models.ForeignKey(Post,on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    votes  = GenericRelation(LikeDislike, related_query_name='comment')
+    parent = models.ForeignKey('self',blank=True, null=True,on_delete=models.CASCADE)
+    created_time = models.DateTimeField(auto_now_add=True)
+    last_modify_time = models.DateTimeField(auto_now=True)
+    class Meta:
+        ordering = ['created_time']
+        verbose_name = 'comment'
+        verbose_name_plural = verbose_name
+    def __str__(self):
+        return "%s's Comment" % self.author.username

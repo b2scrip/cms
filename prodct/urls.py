@@ -23,6 +23,7 @@ urlpatterns = [
     
     path(r'', include('home.urls', namespace='home')),
     path(r'post/', include('post.urls',namespace="post")),
+    path(r'video/', include('video.urls',namespace="video")),
     path(r'user/', include('user.urls',namespace="user")),
     path('upload/', include('fileupload.urls',namespace="upload")),
 ]

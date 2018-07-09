@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 {% load thumbnail %}
 {% load vote_counter %}
+{% block title %}<title>{{catalog}}</title>{% endblock %}
 {% block content %}
 {% for post in posts %}
 <div class="card">
   <img class="card-img-top" src="{% thumbnail post.img 450x180 crop %}" alt="Card image cap">
   <div class="card-body">
-    <h5 class="card-title">{{post.title}}</h5>
+    <h5 class="card-title">{{post.title | truncatechars:50}}</h5>
     <p class="card-text">{{post.author.username}}-{{post.publish}}-<i class="far fa-thumbs-up"><span class="badge">{{post|counter}}</span></i></p>
   </div>
   <div class="card-footer text-muted">
@@ -17,13 +18,13 @@
 {% empty %}
 <a href={% url "post:post-create" %}>还没有内容呢，抢先第一个发布吧</a>
 {% endfor %}
+<hr>
 <div class="pagination">
     <span class="step-links">
         {% if posts.has_previous %}
             <a href="?page=1">&laquo; first</a>
             <a href="?page={{ posts.previous_page_number }}">previous</a>
         {% endif %}
-
         <span class="current">
             Page {{ posts.number }} of {{ posts.paginator.num_pages }}.
         </span>

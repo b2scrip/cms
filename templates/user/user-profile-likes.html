@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block custom_head_css_js %}
+
+{% block title %}<title> {{author.username}}-homepage </title>{% endblock %}
+
+{% endblock %}
+{% block content %}
+{% load thumbnail %}
+
+<div class="paragraphs">
+  <div class="row">
+    <div class="span4">
+      <div class="clearfix content-heading">
+          <img class="pull-right gap-right img-circle" src="{% thumbnail author.profile.picture 150x100 crop %}"/>
+          <h4>{{author.username}}</h4>
+          <p>{{author.profile.bio}}-</p>
+          <a href="{% url "user:user-profile-update" author.profile.id %}"><button type="button" class="btn btn-outline-info">Edit</button></a>
+      </div>
+    </div>
+  </div>
+</div>
+<hr><br>
+
+
+ <ul class="nav nav-tabs">
+        <li><a href="{% url "user:user-profile" %}">All Post</a></li>
+        <li class="active"><a href="#">Who Likes Me</a></li>
+ </ul>
+
+<hr><br>
+{% for supporter in supporters %}
+<div class="col-md-12">
+<div class="card" style="width: 88rem;">
+  <img class="card-img-top" src="{% thumbnail supporter.profile.picture 150x100 crop %}" alt="Card image cap">
+  <div class="card-body">
+    <h4 class="card-title">{{supporter.username}}</h4>
+    <p><a href="{% url "user:user-posts" supporter.id %}" >More</a></p>
+  </div>
+</div>
+<hr></br>
+</div>
+{% endfor %}
+	</div>
+</div>
+
+
+{% endblock %}

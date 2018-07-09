@@ -19,6 +19,6 @@ app_name = "home"
 
 urlpatterns = [
     path(r'', home,name="homepage"),
-    path(r'details/<int:pk>/', catadetail,name="cataposts"),
+    path(r'catalogs/<int:pk>/', catadetail,name="cataposts"),
     
 ]

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+{% load bootstrap %}
+{% block title%}<title>视频发布</title>{% endblock %}
+{% block content %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<form action="." method="POST" enctype="multipart/form-data">{% csrf_token %}
+    {{ form | bootstrap }}
+<button type="submit" class="btn btn-primary btn-sm">Create</button>
+</form>
+{% endblock %}
+
+{% block custom_foot_js %}
+<script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+<script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+{% endblock %}

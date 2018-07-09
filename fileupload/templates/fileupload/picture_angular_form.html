@@ -1,35 +1,16 @@
 <!DOCTYPE HTML>
-<!--
-/*
- * jQuery File Upload Plugin AngularJS Demo 1.6.2
- * https://github.com/blueimp/jQuery-File-Upload
- *
- * Copyright 2013, Sebastian Tschan
- * https://blueimp.net
- *
- * Licensed under the MIT license:
- * http://www.opensource.org/licenses/MIT
- */
--->
 <html lang="en">
 <head>
-<!-- Force latest IE rendering engine or ChromeFrame if installed -->
-<!--[if IE]>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <![endif]-->
 <meta charset="utf-8">
 <title>jQuery File Upload Demo - AngularJS version</title>
 <meta name="description" content="File Upload widget with multiple file selection, drag&amp;drop support, progress bars, validation and preview images, audio and video for AngularJS. Supports cross-domain, chunked and resumable file uploads and client-side image resizing. Works with any server-side platform (PHP, Python, Ruby on Rails, Java, Node.js, Go etc.) that supports standard HTML form file uploads.">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- Bootstrap styles -->
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-<!-- Generic page styles -->
 <link rel="stylesheet" href="/static/css/style.css">
-<!-- blueimp Gallery styles -->
 <link rel="stylesheet" href="/static/css/blueimp-gallery.min.css">
-<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
 <link rel="stylesheet" href="/static/css/jquery.fileupload-ui.css">
-<!-- CSS adjustments for browsers with JavaScript disabled -->
 <noscript><link rel="stylesheet" href="/static/css/jquery.fileupload-ui-noscript.css"></noscript>
 <style>
 /* Hide Angular JS elements before initializing */
@@ -39,49 +20,82 @@
 </style>
 </head>
 <body>
-<div class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-fixed-top .navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="https://github.com/sigurdga/django-jquery-file-upload">Django jQuery File Upload</a>
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Demo</a></li>
-                <li><a href="https://github.com/sigurdga/django-jquery-file-upload">Source Code</a></li>
-                <li><a href="https://github.com/blueimp/jQuery-File-Upload/wiki">Documentation</a></li>
-            </ul>
-        </div>
-    </div>
-</div>
 <div class="container">
-    <h1>Django jQuery File Upload Demo</h1>
-    <h2 class="lead">AngularJS version</h2>
-    <ul class="nav nav-tabs">
-        <li><a href="/upload/basic">Basic</a></li>
-        <li><a href="/upload/basic/plus">Basic Plus</a></li>
-        <li><a href="/upload/new">Basic Plus UI</a></li>
-        <li class="active"><a href="/upload/angular">AngularJS</a></li>
-        <li><a href="/upload/jquery-ui">jQuery UI</a></li>
+<div class="row">
+
+<nav>
+<div id="jq-dropdown-1" class="jq-dropdown jq-dropdown-tip">
+    <ul class="jq-dropdown-menu">
+        <li><a href="{% url "user:user-profile" %}">Profile</a></li>
+        <li><a href="{% url "user:user-supporter" %}">WhoLikeMe</a></li>
+        <li><a href="{% url "upload:upload-angular" %}">Pictures</a></li>
+        <li class="jq-dropdown-divider"></li>
+        <li><a href="#">Setting</a></li>
+        <li><a href="{% url "post:post-create" %}">Create Content</a></li>
+
     </ul>
+</div>
+<ul>
+<br>
+    <a href="/">Home</a> |
+    <a href="{% url "post:post-create" %}">Post</a> |
+    {% if user.is_authenticated %}
+    {% load thumbnail %}
+    welcome <a href="#" data-jq-dropdown="#jq-dropdown-1">{{request.user.username}}</a> |
+    <a href="{% url "user:logout" %}">   ---  Logout</a>
+    {% else %}
+    <a href="{% url "user:usersignup" %}">Join</a> |
+    <a href="{% url "user:userlogin" %}">Login</a> |
+    {% endif %}
+  </ul>
+</nav>
+</div>
+</div>
+<hr>
+
+<div class="container-fluid">
+        <div class="row">
+                <div class="col-md-12">
+                        <div class="row">
+                                <div class="col-md-2">
+                                </div>
+                                <div class="col-md-8">
+<a href={% url "video:video-list" %}>视频</a>
+<a href=/catalogs/29/>二手车</a>
+<a href=/catalogs/28/>房屋</a>
+<a href=/catalogs/27/>签证</a>
+<a href=/catalogs/26/>区块链</a>
+<a href=/catalogs/25/>SEO</a>
+<a href=/catalogs/24/>市场</a>
+<a href=/catalogs/23/>财务</a>
+<a href=/catalogs/22/>客服</a>
+<a href=/catalogs/21/>技术</a>
+<a href=/catalogs/20/>性福天地</a>
+<a href=/catalogs/19/>英语</a>
+<a href=/catalogs/18/>摄影</a>
+<a href=/catalogs/17/>体育</a>
+<a href=/catalogs/16/>游戏</a>
+<a href=/catalogs/15/>美食</a>
+<a href=/catalogs/14/>旅行</a>
+<a href=/catalogs/13/>新闻</a>
+<a href=/catalogs/12/>活动</a>
+<a href=/catalogs/11/>求助</a>
+                                </div>
+                                <div class="col-md-2">
+                                </div>
+                        </div>
+                </div>
+        </div>
+</div>
+
+<hr>
+
+<div class="container">
     <br>
-    <blockquote>
-        <p>File Upload widget with multiple file selection, drag&amp;drop support, progress bars, validation and preview images, audio and video for AngularJS.<br>
-        Supports cross-domain, chunked and resumable file uploads and client-side image resizing.</p>
-    </blockquote>
-    <br>
-    <!-- The file upload form used as target for the file upload widget -->
     <form id="fileupload" action="." method="POST" enctype="multipart/form-data" data-ng-app="demo" data-ng-controller="DemoFileUploadController" data-file-upload="options" data-ng-class="{'fileupload-processing': processing() || loadingFiles}"> {% csrf_token %}
-        <!-- Redirect browsers with JavaScript disabled to the origin page -->
         <noscript><input type="hidden" name="redirect" value="http://blueimp.github.io/jQuery-File-Upload/"></noscript>
-        <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
         <div class="row fileupload-buttonbar">
             <div class="col-lg-7">
-                <!-- The fileinput-button span is used to style the file input field as button -->
                 <span class="btn btn-success fileinput-button" ng-class="{disabled: disabled}">
                     <i class="glyphicon glyphicon-plus"></i>
                     <span>Add files...</span>
@@ -95,19 +109,14 @@
                     <i class="glyphicon glyphicon-ban-circle"></i>
                     <span>Cancel upload</span>
                 </button>
-                <!-- The loading indicator is shown during file processing -->
                 <div class="fileupload-loading"></div>
             </div>
-            <!-- The global progress information -->
             <div class="col-lg-5 fade" data-ng-class="{in: active()}">
-                <!-- The global progress bar -->
                 <div class="progress progress-striped active" data-file-upload-progress="progress()"><div class="progress-bar progress-bar-success" data-ng-style="{width: num + '%'}"></div></div>
-                <!-- The extended global progress information -->
                 <div class="progress-extended">&nbsp;</div>
             </div>
         </div>
         {% verbatim %}
-        <!-- The table listing the files available for upload/download -->
         <table class="table table-striped files ng-cloak">
             <tr data-ng-repeat="file in queue">
                 <td data-ng-switch data-on="!!file.thumbnailUrl">
@@ -155,14 +164,11 @@
         </div>
         <div class="panel-body">
             <ul>
-                <li>You can <strong>drag &amp; drop</strong> files from your desktop on this webpage (see <a href="https://github.com/blueimp/jQuery-File-Upload/wiki/Browser-support">Browser support</a>).</li>
-                <li>Please refer to the <a href="https://github.com/blueimp/jQuery-File-Upload">project website</a> and <a href="https://github.com/blueimp/jQuery-File-Upload/wiki">documentation</a> for more information.</li>
-                <li>Built with Twitter's <a href="http://twitter.github.com/bootstrap/">Bootstrap</a> CSS framework and Icons from <a href="http://glyphicons.com/">Glyphicons</a>.</li>
+                <li>You can <strong>drag &amp; drop</strong> files from your desktop on this webpage.</li>
             </ul>
         </div>
     </div>
 </div>
-<!-- The blueimp Gallery widget -->
 <div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls" data-filter=":even">
     <div class="slides"></div>
     <h3 class="title"></h3>
@@ -174,34 +180,23 @@
 </div>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>
-<!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
 <script src="/static/js/vendor/jquery.ui.widget.js"></script>
-<!-- The Load Image plugin is included for the preview images and image resizing functionality -->
 <script src="/static/js/load-image.min.js"></script>
-<!-- The Canvas to Blob plugin is included for image resizing functionality -->
 <script src="/static/js/canvas-to-blob.min.js"></script>
-<!-- Bootstrap JS is not required, but included for the responsive demo navigation -->
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-<!-- blueimp Gallery script -->
 <script src="/static/js/jquery.blueimp-gallery.min.js"></script>
-<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
 <script src="/static/js/jquery.iframe-transport.js"></script>
-<!-- The basic File Upload plugin -->
 <script src="/static/js/jquery.fileupload.js"></script>
-<!-- The File Upload processing plugin -->
 <script src="/static/js/jquery.fileupload-process.js"></script>
-<!-- The File Upload image preview & resize plugin -->
 <script src="/static/js/jquery.fileupload-image.js"></script>
-<!-- The File Upload audio preview plugin -->
 <script src="/static/js/jquery.fileupload-audio.js"></script>
-<!-- The File Upload video preview plugin -->
 <script src="/static/js/jquery.fileupload-video.js"></script>
-<!-- The File Upload validation plugin -->
 <script src="/static/js/jquery.fileupload-validate.js"></script>
-<!-- The File Upload Angular JS module -->
 <script src="/static/js/jquery.fileupload-angular.js"></script>
-<!-- The main application script -->
 <script src="/static/js/app.js"></script>
 <script src="/static/js/csrf.js"></script>
+<link type="text/css" rel="stylesheet" href="/static/js/jquery.dropdown.min.css" />
+<script type="text/javascript" src="/static/js/jquery.dropdown.min.js"></script>
+
 </body> 
 </html>

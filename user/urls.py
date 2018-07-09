@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.urls import path
 from django.conf import settings
+
 from .views import (
         JoinFormView,
         SignUpView,
@@ -23,7 +24,9 @@ from .views import (
         signup,
         profile_setting,
         user_profile,
-        user_like_posts,
+        what_author_likes,
+        who_likes_me,
+        edit_profile_form,
 )
 
 from django.contrib.auth.views import logout,login
@@ -38,6 +41,8 @@ urlpatterns = [
     path(r'<int:id>/gallery/', user_posts_gallery,name="user-posts-gallery"),
     path(r'setting/', profile_setting,name="profile-setting"),
     path(r'profile/', user_profile,name="user-profile"),
-    path(r'<int:id>/user-like-posts/', user_like_posts,name="user-like-posts"),
+    path(r'who-likes-me/', who_likes_me,name="user-supporter"),
+    path(r'<int:id>/edit_profile/',edit_profile_form, name="user-profile-update"),
+    path(r'<int:id>/what-author-likes/', what_author_likes,name="user-like-posts"),
    
 ]

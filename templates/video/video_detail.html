@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+{% load bootstrap  %}
+{% block title %}<title>{{video.title}}</title>{% endblock %}
+
+{% block custom_head_css_js  %}
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.1/build/css/alertify.min.css"/>
+{% endblock %}
+
+
+{% block content %}
+    <p>{{ video.iframe |safe}}</p>
+    <p>{{ video.title }}</p>
+<p data-id="{{ video.id }}" data-type="post" data-action="like" data-object="video-like">
+          <span class="glyphicon glyphicon-thumbs-up">点赞</span>
+        <span  class="badge badge-light pull-right" data-count="like">{{ video.votes.likes.count }}</span>
+    </p>
+<hr><br>
+
+  {% for comment in video.videocomment_set.all %}
+<div class="card text-left">
+  <div class="card-header">
+ <a href="{% url "user:user-posts" comment.author.id %}">
+ <img src="{% thumbnail comment.author.profile.picture 30x30 crop %}"/>
+ </a>
+ <a href="{% url "user:user-posts" comment.author.id %}" >{{ comment.author.username }}</a>
+ 评论于 <time datetime="{{ comment.created_time }}" title="{{ comment.created_time | date:'Y-m-d H:i:s' }}">{{ comment.created_time | timesince }}</time> 前
+ <a href="javascript:reply('{{ comment.id | escapejs }}', '{{ comment.content | truncatechars:20 | escapejs }}');">回复</a>
+  </div>
+  <div class="card-body">
+    <p class="card-text breakword">
+          {% if comment.parent %}
+           <blockquote><h6>回复 {{ comment.parent.author.username }} 的评论 “{{ comment.parent.content | truncatechars:50 }}”</h6></blockquote>
+          {% endif %}
+          <p>{{ comment.content | linebreaksbr }}</p>
+    </p>
+  </div>
+</div>
+    <p data-id="{{ comment.id }}" data-type="post" data-action="like" data-object="comment-like">
+       <!-- <span class="glyphicon glyphicon-thumbs-up"></span>-->
+         <span class="glyphicon glyphicon-thumbs-up"></span> Like
+        <span  class="badge badge-light pull-right" data-count="like">{{comment.votes.likes.count}}</span>
+    </p>
+<hr>
+  {% endfor %}
+{% if user.is_authenticated %}
+  <div id="comdiv"></div>
+ <form class="comment-form-ajax" id="comment-form-id" method="post"> 
+	{{ comment_form | bootstrap }}
+        <button type="submit" class="btn-default btn-block btn-xs margin-top">提交</button>
+	{% csrf_token %}
+</form>
+{% else %}
+You need<a href={% url "user:userlogin" %}>Login </a> First
+{% endif %}
+{% endblock %}
+
+{% block content_right %}
+
+<h4>recommand vidoes </h4><br>
+
+{% for video in recommend_videos %}
+<div class="paragraphs">
+  <div class="row">
+    <div class="span4">
+      <div class="clearfix content-heading">
+          <img class="pull-left gap-left" src="{% thumbnail video.img 100x100 crop %}"/>
+          <h5>  {{video.title|truncatechars:30}}</h5>
+          <h5>  {{video.author.username}}</h5>
+         <a href="{% url "video:video-detail" video.id %}" ><button class="btn btn-outline-light btn-sm ">  More</button></a>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+{% endfor %}
+{% endblock %}
+
+{% block custom_foot_js %} 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.1/build/alertify.min.js"></script>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<script>
+function like(){
+{% if user.is_authenticated %}
+    var like = $(this);
+    var pk = like.data('id');
+    var action = like.data('action');
+    var object = like.data('object');
+    if ( object == "comment-like" ){
+	$.ajax({
+        url : "/video/api/comment/" +  pk + "/" + action + "/",
+        type : 'POST',
+        data : { 'obj' : pk },
+        success : function (json) {
+            like.find("[data-count='like']").text(json.like_count);
+            } });
+        } else if ( object == "video-like" ) {
+           $.ajax({
+           url : "/video/api/" +  pk + "/" + action + "/",
+           type : 'POST',
+           data : { 'obj' : pk },
+           success : function (json) {
+           like.find("[data-count='like']").text(json.like_count);
+        }
+       });
+}
+{% else %}
+    alertify.warning('You need login first');
+{% endif %} 
+    return false;
+}
+$(function() {
+    $('[data-action="like"]').click(like);
+});
+</script>
+<script>
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+function csrfSafeMethod(method) {
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+</script>
+<script type="text/javascript">
+function escape(txt) {
+    return txt && txt.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+function scrolltobutton(){document.getElementById("comdiv").scrollIntoView();}
+function reply(id, touser) {
+    $("#id_parent").val(id);
+    scrolltobutton();
+//    document.getElementById("comdiv").scrollIntoView();
+}
+</script>
+{% endblock %}

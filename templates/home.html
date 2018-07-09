@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load thumbnail %}
 {% load vote_counter %}
-{% block title %}<title>Home</title>{% endblock %}
+{% block title %}<title>木犁网</title>{% endblock %}
 {% block custom_head_css_js %}
 <style>.gap-right {margin-right: 10px;}</style>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -14,7 +14,7 @@
 <div class="row">
 <h3><strong> <a href={{catalog.get_absolute_url}}>{{catalog.name}}</a></strong></h3>
 </div>
-{% for post in catalog.post_set.all %}
+{% for post in catalog.get_10_posts_for_homepage_at_most %}
 <div class="paragraphs">
   <div class="row">
     <div class="span4">
@@ -30,44 +30,7 @@
 <br>
 {% endfor %}
 {% endif %}
+
 {% endfor %}
-
-<div class="pagination">
-    <span class="step-links">
-        {% if posts.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ posts.previous_page_number }}">previous</a>
-        {% endif %}
-
-        <span class="current">
-            Page {{ posts.number }} of {{ posts.paginator.num_pages }}.
-        </span>
-
-        {% if posts.has_next %}
-            <a href="?page={{ posts.next_page_number }}">next</a>
-            <a href="?page={{ posts.paginator.num_pages }}">last &raquo;</a>
-        {% endif %}
-    </span>
-</div>
 {% endblock %}
-{% block custom_foot_js %}
-<script>
-$(document).ready(function(){ //loads script after the page is loaded
-  $('.card-container').click(function(){ // When the element card-container is click it triggers the function
-  	$(this).toggleClass("flipped"); // Finds the element and toggles the class called flipped to let you know the card is currently flipped or active
-    	$('.card-container .flipped').toggle("flipper"); // If the card-container element also contains the class flipped it will toggle the flip
-  });
-});
-</script>
-    <script>
-        layui.use(['element','util'], function(){
-            var element = layui.element,
-            util = layui.util,
-            $=layui.jquery;
-            util.fixbar({
-              css: {right: 50, bottom: 100}
-              ,bgcolor: '#9F9F9F'
-            });
-          })
-    </script>
-{% endblock %}
+

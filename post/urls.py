@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from likedislike.models import LikeDislike
-from .models import Post
+from .models import Post,Comment
 from django.urls import path
 from django.contrib.auth.decorators import login_required
 from likedislike.views import VotesView
@@ -24,17 +24,19 @@ from .views import (
         PostUpdate,
         PostApi,
         postdetail,
-        postcreate,test
+        postcreate,
+        postedit,
 )
 
 app_name = "post"
 
 urlpatterns = [
 #   path(r'list/', PostList.as_view(),name="post-list"),
-    path(r'test/', test,name="test"),
     path(r'create/', postcreate,name="post-create"),
+    path(r'<int:pk>/edit/', postedit,name="post-edit"),
     path(r'update/(?P<pk>[\w-]+)/', PostUpdate.as_view(),name="post-update"),
     path(r'detail/<int:id>/', postdetail,name="post-detail"),
     path(r'api/create/', PostApi.as_view(),name="postcreate-api"),
     path(r'api/<int:pk>/like/',login_required(VotesView.as_view(model=Post, vote_type=LikeDislike.LIKE)),name='post_like'),
+    path(r'api/comment/<int:pk>/like/',login_required(VotesView.as_view(model=Comment, vote_type=LikeDislike.LIKE)),name='post_comment_like'),
 ]

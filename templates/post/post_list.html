@@ -1,12 +1,5 @@
 
 {% extends "base.html" %}
-{% load static %}
-{% block custom_head_css_js %}
-<script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
-<script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
-
-{% endblock %}
-
 {% block content %}
 <a href="/post/create">信息发布</a>
 {% for post in posts %}
@@ -24,7 +17,6 @@
   </div>
 </div>
 <hr>
-
 {% endfor %}
 {% endblock %}
 

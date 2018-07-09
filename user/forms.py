@@ -1,4 +1,5 @@
 from django import forms
+from .models import Profile
 
 class JoinForm(forms.Form): # or forms.ModelForm
     email = forms.EmailField()
@@ -9,3 +10,7 @@ class JoinForm(forms.Form): # or forms.ModelForm
             raise forms.ValidationError("gmail is not allow to register")
         return email
         
+class EditProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ["bio","picture"]

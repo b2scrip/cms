@@ -1,9 +1,10 @@
 from django.views import View
 from .models import LikeDislike
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 
-class VotesView(View):
+class VotesView(LoginRequiredMixin,View):
     model = None    # Data Model - Articles or Comments
     vote_type = None # Vote type Like/Dislike
 
